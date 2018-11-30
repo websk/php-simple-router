@@ -1,0 +1,13 @@
+{
+  "name": "websk/php-simple-router",
+  "require": {
+    "ext-xmlwriter": "*",
+    "websk/php-utils": "dev-master",
+    "websk/php-slim": "dev-master"
+  },
+  "autoload": {
+    "psr-4": {
+      "": "src/"
+    }
+  }
+}
