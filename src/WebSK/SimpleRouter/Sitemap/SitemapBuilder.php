@@ -2,7 +2,7 @@
 
 namespace WebSK\SimpleRouter\Sitemap;
 
-use WebSK\Slim\ConfWrapper;
+use WebSK\Config\ConfWrapper;
 
 /**
  * Class SitemapBuilder
