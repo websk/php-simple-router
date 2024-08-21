@@ -13,41 +13,40 @@ use WebSK\Utils\Url;
  */
 class SimpleRouter
 {
-    const CONTINUE_ROUTING = 'CONTINUE_ROUTING';
-    const GET_URL = 'GET_URL';
-    const GET_METHOD = 'GET_METHOD';
-    const EXECUTE_ACTION = 'EXECUTE_ACTION';
-    const DEFAULT_CACHE_SEC = 60;
+    const string CONTINUE_ROUTING = 'CONTINUE_ROUTING';
+    const string GET_URL = 'GET_URL';
+    const string GET_METHOD = 'GET_METHOD';
+    const string EXECUTE_ACTION = 'EXECUTE_ACTION';
+    const int DEFAULT_CACHE_SEC = 60;
 
     /**
      * @var object|null
      * текущий (т.е. последний созданный) объект контроллера
      */
-    public static $current_controller_obj = null;
+    public static ?object $current_controller_obj = null;
 
     /**
      * @var string
      * текущий адрес запроса
      */
-    public static $current_url = '';
+    public static string $current_url = '';
 
     /**
      * @var object|null
      * текущий (т.е. последний созданный) объект экшена
      */
-    protected static $current_action_obj = null;
+    protected static ?object $current_action_obj = null;
 
-    /** @var string */
-    protected static $url_prefix = '';
+    protected static string $url_prefix = '';
 
     /** @var string|null */
     protected static $current_url_by_cli = null;
 
     /** @var null|InterfaceSitemapBuilder */
-    protected static $sitemap_builder_obj = null;
+    protected static ?InterfaceSitemapBuilder $sitemap_builder_obj = null;
 
     /** @var array */
-    protected static $sitemap_controller_names_arr = [];
+    protected static array $sitemap_controller_names_arr = [];
 
     /**
      * @param string $url
@@ -68,7 +67,7 @@ class SimpleRouter
     /**
      * @return null|object
      */
-    public static function getCurrentActionObj()
+    public static function getCurrentActionObj(): ?object
     {
         return self::$current_action_obj;
     }
@@ -76,7 +75,7 @@ class SimpleRouter
     /**
      * @return null|object
      */
-    public static function getCurrentControllerObj()
+    public static function getCurrentControllerObj(): ?object
     {
         return SimpleRouter::$current_controller_obj;
     }
@@ -84,7 +83,7 @@ class SimpleRouter
     /**
      * @return int
      */
-    protected static function getDefaultCacheLifetime()
+    protected static function getDefaultCacheLifetime(): int
     {
         return self::DEFAULT_CACHE_SEC;
     }
@@ -103,7 +102,7 @@ class SimpleRouter
      * @param int|null $cache_seconds_for_headers
      * @throws \Exception
      */
-    public static function route($url_regexp, callable $callback_arr, $cache_seconds_for_headers = null)
+    public static function route(string $url_regexp, callable $callback_arr, ?int $cache_seconds_for_headers = null)
     {
         list($controller_obj_or_class_name, $action_method_name) = $callback_arr;
 
@@ -164,7 +163,7 @@ class SimpleRouter
      * @param $url_regexp
      * @return bool
      */
-    public static function matchGroup($url_regexp)
+    public static function matchGroup(string $url_regexp)
     {
         if (self::$sitemap_builder_obj instanceof InterfaceSitemapBuilder) {
             return true;
@@ -182,7 +181,7 @@ class SimpleRouter
     /**
      * @param int $seconds
      */
-    public static function cacheHeaders($seconds = 0)
+    public static function cacheHeaders(int $seconds = 0)
     {
         if (php_sapi_name() !== "cli") {
             return;
@@ -198,9 +197,9 @@ class SimpleRouter
     }
 
     /**
-     * @param $controller_class_name
+     * @param string $controller_class_name
      */
-    protected static function addControllerUrlsToSitemap($controller_class_name)
+    protected static function addControllerUrlsToSitemap(string $controller_class_name)
     {
         if (in_array($controller_class_name, self::$sitemap_controller_names_arr)) {
             return;
