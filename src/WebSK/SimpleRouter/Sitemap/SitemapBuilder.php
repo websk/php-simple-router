@@ -10,19 +10,19 @@ use WebSK\Config\ConfWrapper;
  */
 class SitemapBuilder implements InterfaceSitemapBuilder
 {
-    const XML_URL_STEP = 100;
-    const XML_URL_LIMIT = 2500;
+    const int XML_URL_STEP = 100;
+    const int XML_URL_LIMIT = 2500;
 
-    const STORAGE_TIME_IN_DAYS = 2;
+    const int STORAGE_TIME_IN_DAYS = 2;
 
-    protected $data_path = null;
-    protected $sitemap_root = null;
-    protected $sitemap_build_time = null;
-    protected $current_file_number = 1;
-    protected $current_url_number = 1;
-    protected $current_file_name = null;
+    protected ?string $data_path = null;
+    protected ?string $sitemap_root = null;
+    protected ?int $sitemap_build_time = null;
+    protected int $current_file_number = 1;
+    protected int $current_url_number = 1;
+    protected ?string $current_file_name = null;
 
-    protected $xml_files_arr = array();
+    protected array $xml_files_arr = [];
 
     /**
      * @var null|\XMLWriter
@@ -48,7 +48,7 @@ class SitemapBuilder implements InterfaceSitemapBuilder
      * @param $url
      * @param string $freq
      */
-    public function add($url, $freq = 'never')
+    public function add($url, $freq = 'never'): void
     {
         if ($this->current_file_name === null) {
             $this->startFile();
@@ -71,7 +71,7 @@ class SitemapBuilder implements InterfaceSitemapBuilder
         }
     }
 
-    public function finish()
+    public function finish(): void
     {
         if ($this->current_file_name !== null) {
             $this->endFile();
@@ -80,7 +80,7 @@ class SitemapBuilder implements InterfaceSitemapBuilder
         $this->createIndexFile();
     }
 
-    protected function createIndexFile()
+    protected function createIndexFile(): void
     {
         $current_domain = ConfWrapper::value('site_domain');
 
@@ -109,7 +109,7 @@ class SitemapBuilder implements InterfaceSitemapBuilder
         $this->writer = null;
     }
 
-    protected function startFile()
+    protected function startFile(): void
     {
         if ($this->current_file_name !== null) {
             return;
@@ -128,7 +128,7 @@ class SitemapBuilder implements InterfaceSitemapBuilder
         $this->writer->writeAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
     }
 
-    protected function appendToFile()
+    protected function appendToFile(): void
     {
         file_put_contents(
             $this->data_path . $this->current_file_name,
@@ -137,7 +137,7 @@ class SitemapBuilder implements InterfaceSitemapBuilder
         );
     }
 
-    protected function endFile()
+    protected function endFile(): void
     {
         if ($this->current_file_name === null) {
             return;
@@ -153,12 +153,12 @@ class SitemapBuilder implements InterfaceSitemapBuilder
         $this->writer = null;
     }
 
-    public function log($controller_name)
+    public function log($controller_name): void
     {
         echo "[" . date('H:i:s') . "] Building controller " . $controller_name . "\n";
     }
 
-    public static function removeOldSitemapFiles()
+    public static function removeOldSitemapFiles(): void
     {
         $time = time();
         $data_path = ConfWrapper::value('static_data_path');

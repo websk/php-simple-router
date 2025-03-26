@@ -3,7 +3,7 @@
   "require": {
     "php": "^8.3",
     "ext-xmlwriter": "*",
-    "websk/php-utils": "2.0.*",
+    "websk/php-utils": "2.1.*",
     "websk/php-config": "2.0.*"
   },
   "autoload": {

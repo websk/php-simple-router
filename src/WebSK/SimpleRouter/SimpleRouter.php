@@ -19,39 +19,24 @@ class SimpleRouter
     const string EXECUTE_ACTION = 'EXECUTE_ACTION';
     const int DEFAULT_CACHE_SEC = 60;
 
-    /**
-     * @var object|null
-     * текущий (т.е. последний созданный) объект контроллера
-     */
     public static ?object $current_controller_obj = null;
 
-    /**
-     * @var string
-     * текущий адрес запроса
-     */
     public static string $current_url = '';
 
-    /**
-     * @var object|null
-     * текущий (т.е. последний созданный) объект экшена
-     */
     protected static ?object $current_action_obj = null;
 
     protected static string $url_prefix = '';
 
-    /** @var string|null */
-    protected static $current_url_by_cli = null;
+    protected static ?string $current_url_by_cli = null;
 
-    /** @var null|InterfaceSitemapBuilder */
     protected static ?InterfaceSitemapBuilder $sitemap_builder_obj = null;
 
-    /** @var array */
     protected static array $sitemap_controller_names_arr = [];
 
     /**
      * @param string $url
      */
-    public static function setCurrentUrlByCli(string $url)
+    public static function setCurrentUrlByCli(string $url): void
     {
         self::$current_url_by_cli = $url;
     }
@@ -59,7 +44,7 @@ class SimpleRouter
     /**
      * @param InterfaceSitemapBuilder $sitemap_builder
      */
-    public static function setSitemapBuilder(InterfaceSitemapBuilder $sitemap_builder)
+    public static function setSitemapBuilder(InterfaceSitemapBuilder $sitemap_builder): void
     {
         self::$sitemap_builder_obj = $sitemap_builder;
     }
@@ -102,7 +87,7 @@ class SimpleRouter
      * @param int|null $cache_seconds_for_headers
      * @throws \Exception
      */
-    public static function route(string $url_regexp, callable $callback_arr, ?int $cache_seconds_for_headers = null)
+    public static function route(string $url_regexp, callable $callback_arr, ?int $cache_seconds_for_headers = null): void
     {
         list($controller_obj_or_class_name, $action_method_name) = $callback_arr;
 
@@ -160,10 +145,10 @@ class SimpleRouter
     /**
      * Простой метод проверки, соответствует ли запрошенный урл указанной маске.
      * Может использоваться для группировки роутов.
-     * @param $url_regexp
+     * @param string $url_regexp
      * @return bool
      */
-    public static function matchGroup(string $url_regexp)
+    public static function matchGroup(string $url_regexp): bool
     {
         if (self::$sitemap_builder_obj instanceof InterfaceSitemapBuilder) {
             return true;
@@ -181,7 +166,7 @@ class SimpleRouter
     /**
      * @param int $seconds
      */
-    public static function cacheHeaders(int $seconds = 0)
+    public static function cacheHeaders(int $seconds = 0): void
     {
         if (php_sapi_name() !== "cli") {
             return;
@@ -199,7 +184,7 @@ class SimpleRouter
     /**
      * @param string $controller_class_name
      */
-    protected static function addControllerUrlsToSitemap(string $controller_class_name)
+    protected static function addControllerUrlsToSitemap(string $controller_class_name): void
     {
         if (in_array($controller_class_name, self::$sitemap_controller_names_arr)) {
             return;
@@ -219,8 +204,6 @@ class SimpleRouter
                 self::$sitemap_builder_obj->add($url, $freq);
             }
         }
-
-        return;
     }
 
     /**
@@ -236,7 +219,7 @@ class SimpleRouter
         string $action_method_name,
         int $cache_time = null,
         string $layout_file = null
-    ) {
+    ): void {
         $matches_arr = array();
         self::$current_url = Url::getUriNoQueryString();
 
@@ -280,7 +263,7 @@ class SimpleRouter
      * @param string $base_url
      * @param string $controller_class_name
      */
-    public static function routeBasedCrud(string $base_url, string $controller_class_name)
+    public static function routeBasedCrud(string $base_url, string $controller_class_name): void
     {
         $current_url_no_query = Url::getUriNoQueryString();
 
@@ -300,7 +283,7 @@ class SimpleRouter
      * @param string $url_mask
      * @param string $target_url
      */
-    protected function routeRedirect(string $url_mask, string $target_url)
+    protected function routeRedirect(string $url_mask, string $target_url): void
     {
         $current_url = $_SERVER['REQUEST_URI'];
         if (preg_match($url_mask, $current_url)) {
