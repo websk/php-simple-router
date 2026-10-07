@@ -1,14 +1,27 @@
 {
   "name": "websk/php-simple-router",
+  "description": "Simple routing and sitemap generation library for PHP applications",
+  "license": "MIT",
   "require": {
     "php": "^8.3",
     "ext-xmlwriter": "*",
-    "websk/php-utils": "2.1.*",
-    "websk/php-config": "2.0.*"
+    "websk/php-utils": "3.0.*",
+    "websk/php-config": "2.2.*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^12.5"
   },
   "autoload": {
     "psr-4": {
-      "": "src/"
+      "WebSK\\": "src/WebSK/"
     }
+  },
+  "scripts": {
+    "lint": "find src tests -name '*.php' -print0 | xargs -0 -n1 php -d error_reporting=E_ALL -d display_errors=1 -l",
+    "test": "phpunit",
+    "check": [
+      "@lint",
+      "@test"
+    ]
   }
 }

@@ -217,8 +217,8 @@ class SimpleRouter
         string $url_regexp,
         string $controller_class_name,
         string $action_method_name,
-        int $cache_time = null,
-        string $layout_file = null
+        ?int $cache_time = null,
+        ?string $layout_file = null
     ): void {
         $matches_arr = array();
         self::$current_url = Url::getUriNoQueryString();
